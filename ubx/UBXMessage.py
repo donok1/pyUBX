@@ -203,6 +203,7 @@ def initMessageClass(cls):
                     errmsg += ' Is the \'Fields\' class empty?'
                     raise Exception(errmsg)
                 _len = len(msg)     # msg will be consumed in the loop
+# Could add a check here, to control the number of reated fields with message data
                 for (varName, varType) in zip(varNames, varTypes):
                     val, msg = varType.parse(msg)
                     setattr(self, varName, val)
@@ -223,6 +224,7 @@ def initMessageClass(cls):
                 varNames, varTypes = _mkNamesAndTypes(fieldInfo, self._len)
                 s = "{}-{}:".format(cls_name, type(self).__name__)
                 for (varName, varType) in zip(varNames, varTypes):
+#                    print(f'varName:{varName}   varType:{varType}   getattr(self, varName):{getattr(self, varName)}'  )
                     s += "\n  {}={}".format(
                         varName,
                         varType.toString(getattr(self, varName))    # prettify

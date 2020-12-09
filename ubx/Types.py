@@ -110,12 +110,20 @@ class R4:
     """UBX single precision float."""
     fmt = "f"
     ctype = "float"
+    
+    @staticmethod
+    def toString(val):
+        return '"{}"'.format(val)
 
 @_InitGenericType
 class R8:
     """UBX double precision float."""
     fmt = "d"
     ctype = "double"
+    
+    @staticmethod
+    def toString(val):
+        return '"{}"'.format(val)
 
 class CH:
     """ASCII / ISO 8859.1 Encoding."""
