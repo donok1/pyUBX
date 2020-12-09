@@ -46,6 +46,11 @@ class UBXMessage(object):
         self._id = msgId
         self._payload = payload
 
+    @classmethod
+    def fromMessage(cls, msg):
+        msgClass, msgId, payload = cls.extract(msg)
+        return cls(msgClass, msgId, payload)
+
     @staticmethod
     def make(msgClass, msgId, payload):
         """Return a proper UBX message from the given class, id and payload."""
