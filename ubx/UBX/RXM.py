@@ -44,10 +44,16 @@ class RXM:
             """Return human readable string."""
             fieldInfo = _mkFieldInfo(self.Fields)
             varNames, varTypes = _mkNamesAndTypes(fieldInfo, self._len)
+            legend = "svId sigId  cpMes         prMes                 cno        doMes      prStdev cpStdev doStdev  trkStat locktime\n" \
+                     "            [m]           [cycles]              [dBHz]     [Hz]       [m]     [cycles][Hz]             [ms]\n"\
+                     "                        Pseudorange valid                       prValid -----------------------------.\n"\
+                     "                        Carrier phase valid                     cpValid  ---------------------------.|\n"\
+                     "                        Half cycle valid                        halfCyc   -------------------------.||\n"\
+                     "                        Half cycle subtracted from phase        subHalfCyc -----------------------.|||"
             header = "\n  RXM-{}:".format(type(self).__name__)
             header+= f' {self.rcvTow:15.9f} {self.week:5d} {self.leapS:3d}'\
                      f' {self.numMeas:3d} {self.recStat:08b} x\{self.version:02x}'
-            s = header
+            s = legend + header
             for i in range(self.numMeas):
                 s += f'\n{gnssIdRNXfromCode(getattr(self,varNames[7+3+i*14])):1s}'   # gnssId
                 s += f'{getattr(self, varNames[7+4+i*14])%100:2d}'   # svId
@@ -66,6 +72,7 @@ class RXM:
 #                s += f' {getattr(self, varNames[7+11+i*14]):4d}'   # doStdev
                 s += f' {0.002*(2.0**getattr(self, varNames[7+11+i*14])):7.3f}'   # prStdev
                 s += f' {getattr(self, varNames[7+12+i*14]):08b}'   # trkStat
+                s += f' {getattr(self, varNames[7+7+i*14]):5d}'   # locktime
 
 #                    varName,
 #                    varType.toString(getattr(self, varName))    # prettify
